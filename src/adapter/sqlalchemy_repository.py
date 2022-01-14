@@ -10,9 +10,6 @@ class SqlAlchemyRepository(AbstractRepository[T]):
 
     def add(self, model: T):
         self.session.add(model)
-        self.session.commit()
-        self.session.refresh(model)
-
         return model
 
     def get(self, **kwargs) -> Optional[T]:

@@ -1,8 +1,11 @@
+from operator import add
 from sqlalchemy import Table
 from sqlalchemy.orm import mapper, relationship
 from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Boolean, DateTime, Float, Integer, Numeric, String
 from src.adapter.database import Base
+from src.domain.address.model import Address
+from src.domain.customer.model import Customer
 from src.domain.product_discount.model import ProductDiscount
 from src.domain.payment_method.model import PaymentMethod
 from src.domain.product.model import Product
@@ -70,21 +73,13 @@ table_product_discount = Table(
     Column('payment_method_id', ForeignKey('payment_methods.id'))
 )
 
-table_customer = Table(
-    'customers',
-    metadata,
-    Column('id', primary_key=True, autoincrement=True),
-    Column('first_name',String(45)),
-    Column('last_name', String(45))
+table_address = Table(
+    'address'
 
 )
 
-table_address = Table(
-    'address',
-    metadata,
-    Column('address', String(50)),
-    Column('City',String(50)),
-    Column('customer_id', ForeignKey('customers.id'))
+table_customer = Table(
+    'customer'
 
 )
 
@@ -101,6 +96,11 @@ def start_mapper():
         'category': relationship(category_mapper),
         'supplier': relationship(supplier_mapper),
         'discounts': relationship(product_discount_mapper)
+    })
+
+    address_mapper = mapper(Address, table_address)
+    mapper(Customer, table_customer, properties={
+        'address': relationship(address_mapper)
     })
 
     mapper(Coupon, table_coupon)
