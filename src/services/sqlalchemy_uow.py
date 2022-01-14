@@ -13,8 +13,8 @@ from src.adapter.database import Session
 
 
 class SqlAlchemyUnitOfWork:
-  def __init__(self, session):
-      self.session = session
+  def __init__(self):
+      self.session = Session()
 
 
   def __enter__(self):
