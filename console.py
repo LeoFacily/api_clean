@@ -1,5 +1,5 @@
 from src.services.sqlalchemy_uow import SqlAlchemyUnitOfWork
-from src.services.category_service import create_category
+from src.services.category.category_service import create_category
 from src.adapter.database import Session
 from src.adapter.orm import start_mapper
 
