@@ -5,25 +5,25 @@ from src.services.sqlalchemy_uow import SqlAlchemyUnitOfWork
 
 def create_product(product_dto: ProductDTO, uow: SqlAlchemyUnitOfWork):
   with uow:
-    category = uow.category_repository.get(id=product_dto.category_id)
+    category = uow.category_repository.get(id = product_dto.category_id)
 
     if not category:
       raise Exception('Category not found')
 
-    supplier = uow.supplier_repository.get(product_dto.supplier_id)
+    supplier = uow.supplier_repository.get(id = product_dto.supplier_id)
 
     if not supplier:
       raise Exception('Supplier not found')
     
 
     product = Product(
-      description=product_dto.description, 
-      price=product_dto.price, 
-      technical_details=product_dto.technical_details,
-      image=product_dto.image,
-      visible=product_dto.visible,
-      category=product_dto.category,
-      supplier=product_dto.supplier)
+      description = product_dto.description, 
+      price = product_dto.price, 
+      technical_details = product_dto.technical_details,
+      image = product_dto.image,
+      visible = product_dto.visible,
+      category = category,
+      supplier = supplier)
 
     uow.product_repository.add(product)
 
