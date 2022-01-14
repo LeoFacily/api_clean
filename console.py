@@ -10,7 +10,7 @@ db = Session()
 
 uow = SqlAlchemyUnitOfWork(db)
 
-create_category('Categoria 1', uow)
+create_category('Categoria1', uow)
 
 
 

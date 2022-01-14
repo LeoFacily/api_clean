@@ -1,25 +1,35 @@
 from src.domain.product.model import Product
 from src.domain.product_discount.model import ProductDiscount
+from src.services.product.product_dto import ProductDTO
 from src.services.sqlalchemy_uow import SqlAlchemyUnitOfWork
 
-def create_product(description: str, price: float, technical_details: str, image: str, visible: bool, category_id: int, supplier_id: int, uow: SqlAlchemyUnitOfWork):
+def create_product(product_dto: ProductDTO, uow: SqlAlchemyUnitOfWork):
   with uow:
-    category = uow.category_repository.get(id=category_id)
+    category = uow.category_repository.get(id=product_dto.category_id)
 
     if not category:
       raise Exception('Category not found')
 
-    supplier = uow.supplier_repository.get(id=supplier_id)
+    supplier = uow.supplier_repository.get(product_dto.supplier_id)
 
     if not supplier:
       raise Exception('Supplier not found')
     
 
-    product = Product(description=description, price=price, technical_details=technical_details, image=image, visible=visible, category=category, supplier=supplier)
+    product = Product(
+      description=product_dto.description, 
+      price=product_dto.price, 
+      technical_details=product_dto.technical_details,
+      image=product_dto.image,
+      visible=product_dto.visible,
+      category=product_dto.category,
+      supplier=product_dto.supplier)
 
     uow.product_repository.add(product)
 
     uow.commit()
+
+    return product
   
 
 def create_discount(mode: str, value: float, payment_method_id: int, product_id: int, uow: SqlAlchemyUnitOfWork):
